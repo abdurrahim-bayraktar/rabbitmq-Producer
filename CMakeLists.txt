@@ -9,7 +9,7 @@ find_package(rmqcpp CONFIG REQUIRED)
 find_package(bal CONFIG REQUIRED)
 
 
-add_executable(rabbitMQTest producer.cpp)
+add_executable(rabbitMQTest program2.cpp)
 
 target_link_libraries(rabbitMQTest PRIVATE bal balb-iface ball-iface balm-iface
         rmqcpp::rmq
