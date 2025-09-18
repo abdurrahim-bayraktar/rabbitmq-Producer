@@ -45,7 +45,8 @@ int main()
     rmqt::Result<rmqa::Producer> prodRes =
         vhost->createProducer(topology, exchange, maxOutstandingConfirms);
 
-    if (!prodRes) {
+    if (!prodRes) 
+    {
         std::cerr << "Failed to create producer\n";
         return 1;
     }
@@ -53,19 +54,23 @@ int main()
     bsl::shared_ptr<rmqa::Producer> producer = prodRes.value();
 
     // Consumer listens to MY queue
-    rmqt::Result<rmqa::Consumer> consRes = vhost->createConsumer(
+    rmqt::Result<rmqa::Consumer> consRes = vhost->createConsumer
+    (
         topology,
         myQueue,  // Listen to my own queue
-        [](rmqp::MessageGuard &guard) {
+        [](rmqp::MessageGuard &guard) 
+        {
             const rmqt::Message &m = guard.message();
             const uint8_t *p = m.payload();
             std::string s(reinterpret_cast<const char*>(p), m.payloadSize());
             std::cout << "Received: '" << s << "'\n";
             std::cout.flush();
             guard.ack();
-        });
+        }
+    );
 
-    if (!consRes) {
+    if (!consRes) 
+    {
         std::cerr << "Failed to create consumer\n";
         return 1;
     }
@@ -91,16 +96,19 @@ int main()
             [](const rmqt::Message& message,
                const bsl::string& routingKey,
                const rmqt::ConfirmResponse& response) {
-                if (response.status() == rmqt::ConfirmResponse::ACK) {
+                if (response.status() == rmqt::ConfirmResponse::ACK) 
+                {
                     std::cout << "Message sent to Program 1: " << message.guid() << "\n";
                     std::cout.flush();
                 }
-                else {
+                else 
+                {
                     std::cerr << "Message NOT confirmed: " << message.guid() << "\n";
                 }
             });
 
-        if (status != rmqp::Producer::SENDING) {
+        if (status != rmqp::Producer::SENDING) 
+        {
             std::cerr << "Send failed\n";
             return 1;
         }
